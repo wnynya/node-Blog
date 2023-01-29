@@ -4,6 +4,7 @@ import { mysql, table } from './index.mjs';
 
 import { AuthAccount, AuthElement } from '@wnynya/auth';
 import BlogComment from './blog-comment.mjs';
+import Date from 'datwo';
 
 export default class BlogArticle extends MySQLClass {
   constructor(uid = Crypto.uid()) {
@@ -89,6 +90,10 @@ export default class BlogArticle extends MySQLClass {
       tags: this.tags,
       category: this.category,
       views: this.views,
+      datetime: {
+        display: new Date(this.creation).format('YY년 M월 GK'),
+        full: new Date(this.creation).format('YYYY-MM-DD hh:mm:ss'),
+      },
     };
   }
 
@@ -102,7 +107,7 @@ export default class BlogArticle extends MySQLClass {
         title: 'string',
         thumbnail: 'string',
         creation: (date) => {
-          return new Date(date); //.getTime()
+          return new Date(date).getTime();
         },
       },
       filter: `category = '${this.category}' && creation < '${mysql.datetime(
@@ -115,7 +120,25 @@ export default class BlogArticle extends MySQLClass {
       },
     });
 
-    return res;
+    const articles = [];
+
+    for (const article of res) {
+      articles.push({
+        uid: article.uid,
+        eid: article.eid,
+        title: {
+          html: article.title,
+          image: article.thumbnail,
+        },
+        creation: article.creation,
+        datetime: {
+          display: new Date(article.creation).format('YY년 M월 GK'),
+          full: new Date(article.creation).format('YYYY-MM-DD hh:mm:ss'),
+        },
+      });
+    }
+
+    return articles;
   }
 
   async selectAfter(size = 5) {
@@ -128,7 +151,7 @@ export default class BlogArticle extends MySQLClass {
         title: 'string',
         thumbnail: 'string',
         creation: (date) => {
-          return new Date(date); //.getTime()
+          return new Date(date).getTime();
         },
       },
       filter: `category = '${this.category}' && creation > '${mysql.datetime(
@@ -141,7 +164,25 @@ export default class BlogArticle extends MySQLClass {
       },
     });
 
-    return res;
+    const articles = [];
+
+    for (const article of res) {
+      articles.push({
+        uid: article.uid,
+        eid: article.eid,
+        title: {
+          html: article.title,
+          image: article.thumbnail,
+        },
+        creation: article.creation,
+        datetime: {
+          display: new Date(article.creation).format('YY년 M월 GK'),
+          full: new Date(article.creation).format('YYYY-MM-DD hh:mm:ss'),
+        },
+      });
+    }
+
+    return articles;
   }
 
   async insertComment(comment) {

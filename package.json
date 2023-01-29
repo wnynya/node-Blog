@@ -1,12 +1,13 @@
 {
   "name": "@wnynya/blog",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "author": "Wany <sung@wany.io> (https://wany.io)",
   "main": "src/index.mjs",
   "dependencies": {
     "@wnynya/auth": "^1.0.0",
     "@wnynya/crypto": "^0.1.1",
-    "@wnynya/mysql-client": "^0.2.10"
+    "@wnynya/mysql-client": "^0.2.10",
+    "datwo": "^0.7.1"
   },
   "devDependencies": {
     "@wnynya/express-middlewares": "^1.2.3",
