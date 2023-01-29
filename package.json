@@ -1,6 +1,6 @@
 {
   "name": "@wnynya/blog",
-  "version": "1.0.1",
+  "version": "1.0.4",
   "author": "Wany <sung@wany.io> (https://wany.io)",
   "main": "src/index.mjs",
   "dependencies": {

@@ -30,7 +30,7 @@ export default class BlogArticle extends MySQLClass {
       content: 'string',
       author: [
         (uid) => {
-          return new AuthAccount(AuthElement(uid));
+          return new AuthAccount(new AuthElement(uid));
         },
         (account) => {
           return account.element.uid;
@@ -51,7 +51,7 @@ export default class BlogArticle extends MySQLClass {
 
   async select(parts = '*') {
     await this.selectQuery(parts);
-    if (parts.includes('author')) {
+    if (parts == '*' || parts.includes('author')) {
       await this.author.select([
         'element',
         'eid',
@@ -90,6 +90,58 @@ export default class BlogArticle extends MySQLClass {
       category: this.category,
       views: this.views,
     };
+  }
+
+  async selectBefore(size = 5) {
+    const res = await mysql.query({
+      statement: 'SELECT',
+      table: table.articles,
+      imports: {
+        uid: 'string',
+        eid: 'string',
+        title: 'string',
+        thumbnail: 'string',
+        creation: (date) => {
+          return new Date(date); //.getTime()
+        },
+      },
+      filter: `category = '${this.category}' && creation < '${mysql.datetime(
+        this.creation
+      )}'`,
+      size: size,
+      page: 1,
+      sort: {
+        creation: 'DESC',
+      },
+    });
+
+    return res;
+  }
+
+  async selectAfter(size = 5) {
+    const res = await mysql.query({
+      statement: 'SELECT',
+      table: table.articles,
+      imports: {
+        uid: 'string',
+        eid: 'string',
+        title: 'string',
+        thumbnail: 'string',
+        creation: (date) => {
+          return new Date(date); //.getTime()
+        },
+      },
+      filter: `category = '${this.category}' && creation > '${mysql.datetime(
+        this.creation
+      )}'`,
+      size: size,
+      page: 1,
+      sort: {
+        creation: 'DESC',
+      },
+    });
+
+    return res;
   }
 
   async insertComment(comment) {
