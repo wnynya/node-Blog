@@ -83,6 +83,7 @@ export default class BlogArticle extends MySQLClass {
       content: {
         html: this.content,
         text: stringify(this.content),
+        desc: stringify(this.content).substring(0, 240),
       },
       author: this.author.toJSON(),
       creation: this.creation.getTime(),
@@ -278,7 +279,14 @@ export default class BlogArticle extends MySQLClass {
       size: size,
       page: page,
       count: count,
+      sort: {
+        creation: 'DESC',
+      },
     });
+
+    if (count) {
+      return res;
+    }
 
     let articles = [];
     const tasks = [];
