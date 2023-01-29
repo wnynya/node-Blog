@@ -113,7 +113,7 @@ export default class BlogArticle extends MySQLClass {
       },
       filter: `category = '${this.category}' && creation < '${mysql.datetime(
         this.creation
-      )}'`,
+      )}' && uid != '${this.uid}'`,
       size: size,
       page: 1,
       sort: {
@@ -157,7 +157,7 @@ export default class BlogArticle extends MySQLClass {
       },
       filter: `category = '${this.category}' && creation > '${mysql.datetime(
         this.creation
-      )}'`,
+      )}' && uid != '${this.uid}'`,
       size: size,
       page: 1,
       sort: {
