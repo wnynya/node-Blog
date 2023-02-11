@@ -92,7 +92,7 @@ export default class BlogArticle extends MySQLClass {
       category: this.category,
       views: this.views,
       datetime: {
-        display: new Date(this.creation).format('YY년 M월 GK'),
+        display: new Date(this.creation).format('YY년 M월의 GK'),
         full: new Date(this.creation).format('YYYY-MM-DD hh:mm:ss'),
       },
     };
